@@ -1,12 +1,13 @@
 import Vue from 'vue';
 
 import Buefy from 'buefy';
-import 'buefy/dist/buefy.css';
 
 import router from './router';
 import store from './store';
 
 import App from './App.vue';
+
+import './assets/styles/main.sass';
 
 Vue.use(Buefy);
 
