@@ -5,9 +5,7 @@
       <div class="columns">
         <Sidebar class="column" />
         <div class="column is-three-quarters">
-          <div class="notification is-primary">
-            This container is <strong>centered</strong> on desktop and larger viewports.
-          </div>
+          <router-view />
         </div>
       </div>
       <Footer />
