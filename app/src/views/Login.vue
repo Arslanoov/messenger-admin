@@ -22,7 +22,7 @@
       <b-input :value="form.password" type="password" maxlength="32"></b-input>
     </b-field>
 
-    <b-button type="is-info">Submit</b-button>
+    <b-button @click="logIn" type="is-info">Submit</b-button>
   </form>
 </template>
 
@@ -48,5 +48,7 @@ export default class Login extends Vue {
   @authModule.Mutation('setAuthFormPassword') setPassword!: typeof AuthStoreModule.prototype.setAuthFormPassword
 
   @authModule.Mutation('setAuthFormPassword') clearError!: typeof AuthStoreModule.prototype.clearAuthFormError
+
+  @authModule.Action('logIn') logIn!: typeof AuthStoreModule.prototype.logIn
 }
 </script>
