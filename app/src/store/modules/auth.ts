@@ -14,7 +14,7 @@ import { AuthFormInterface } from '@/types/forms/auth';
 class User extends VuexModule {
   public token: string | null = null
 
-  authForm: AuthFormInterface = {
+  public authForm: AuthFormInterface = {
     username: null,
     password: null,
     error: null,

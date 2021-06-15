@@ -31,7 +31,7 @@ const routes: Array<RouteConfig> = [
     name: 'Login',
     component: Login,
     meta: {
-      requiresAuth: true,
+      requiresNoAuth: true,
       layout: 'auth',
     },
   },
