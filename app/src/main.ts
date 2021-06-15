@@ -7,6 +7,8 @@ import store from './store';
 
 import App from './App.vue';
 
+require('./plugins/axios');
+
 import './assets/styles/main.sass';
 
 Vue.use(Buefy);

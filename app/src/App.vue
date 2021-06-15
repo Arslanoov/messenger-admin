@@ -1,35 +1,25 @@
 <template>
-  <main class="main">
-    <div class="container is-fluid">
-      <Header />
-      <div class="columns">
-        <Sidebar class="column" />
-        <div class="column is-three-quarters">
-          <router-view />
-        </div>
-      </div>
-      <Footer />
-    </div>
-  </main>
+  <component :is="layout">
+  </component>
 </template>
 
-<script>
-import { Component, Vue } from 'vue-property-decorator';
+<script lang="ts">
+import { Vue, Component } from 'vue-property-decorator';
 
-import Header from '@/components/layouts/Header.vue';
-import Sidebar from '@/components/layouts/Sidebar.vue';
-import Footer from '@/components/layouts/Footer.vue';
+import MainLayout from '@/layouts/MainLayout.vue';
+import AuthLayout from '@/layouts/AuthLayout.vue';
 
 @Component({
   components: {
-    Header,
-    Sidebar,
-    Footer,
+    MainLayout,
+    AuthLayout,
   },
 })
 
-export default class HelloWorld extends Vue {
-
+export default class App extends Vue {
+  public get layout(): string {
+    return `${this.$route.meta.layout || 'empty'}-layout`;
+  }
 }
 </script>
 
