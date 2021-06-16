@@ -22,7 +22,7 @@
       <b-input @input="setPassword" :value="form.password" type="password" maxlength="32"></b-input>
     </b-field>
 
-    <b-button @click="auth" type="is-info">Submit</b-button>
+    <b-button @click="onLogIn" type="is-info">Submit</b-button>
   </form>
 </template>
 
@@ -52,7 +52,7 @@ export default class Login extends Vue {
   @authModule.Action('logIn') logIn!: typeof AuthStoreModule.prototype.logIn
   @authModule.Action('fetchUser') fetchUser!: typeof AuthStoreModule.prototype.fetchUser
 
-  public auth(): void {
+  public onLogIn(): void {
     this.logIn()
       .then(() => this.fetchUser())
       .then(() => this.$router.push('/'));
