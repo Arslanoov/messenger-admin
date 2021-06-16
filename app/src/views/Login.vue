@@ -15,14 +15,14 @@
     </b-field>
 
     <b-field label="Username">
-      <b-input :value="form.username" maxlength="32"></b-input>
+      <b-input @input="setUsername" :value="form.username" maxlength="32"></b-input>
     </b-field>
 
     <b-field label="Password">
-      <b-input :value="form.password" type="password" maxlength="32"></b-input>
+      <b-input @input="setPassword" :value="form.password" type="password" maxlength="32"></b-input>
     </b-field>
 
-    <b-button @click="logIn" type="is-info">Submit</b-button>
+    <b-button @click="auth" type="is-info">Submit</b-button>
   </form>
 </template>
 
@@ -47,8 +47,15 @@ export default class Login extends Vue {
 
   @authModule.Mutation('setAuthFormPassword') setPassword!: typeof AuthStoreModule.prototype.setAuthFormPassword
 
-  @authModule.Mutation('setAuthFormPassword') clearError!: typeof AuthStoreModule.prototype.clearAuthFormError
+  @authModule.Mutation('clearAuthFormError') clearError!: typeof AuthStoreModule.prototype.clearAuthFormError
 
   @authModule.Action('logIn') logIn!: typeof AuthStoreModule.prototype.logIn
+  @authModule.Action('fetchUser') fetchUser!: typeof AuthStoreModule.prototype.fetchUser
+
+  public auth(): void {
+    this.logIn()
+      .then(() => this.fetchUser())
+      .then(() => this.$router.push('/'));
+  }
 }
 </script>

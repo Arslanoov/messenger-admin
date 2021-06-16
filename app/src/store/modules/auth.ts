@@ -6,11 +6,13 @@ import {
 } from 'vuex-module-decorators';
 
 import { AuthFormInterface } from '@/types/forms/auth';
-import UserInterface from '@/types/user';
+import UserInterface, { ProfileInterface } from '@/types/user';
 
 import AuthService from '@/api/v1/auth';
 import axios from 'axios';
 const service = new AuthService();
+
+export const REQUIRED_ROLE = 'Admin';
 
 @Module({
   namespaced: true,
@@ -62,7 +64,7 @@ class User extends VuexModule {
   }
 
   @Mutation
-  public setUser(user: UserInterface): void {
+  public setUser(user: ProfileInterface): void {
     this.user = user;
   }
 
@@ -72,16 +74,15 @@ class User extends VuexModule {
   }
 
   @Action({ rawError: true })
-  public async logIn(): Promise<{user: UserInterface}> {
+  public async logIn(): Promise<UserInterface> {
     return new Promise((resolve, reject) => {
       this.context.commit('deleteUser');
 
       service.auth(this.authForm.username || '', this.authForm.password || '')
         .then(response => {
-          const user = response.data;
+          const user: UserInterface = response.data;
           localStorage.setItem('user', JSON.stringify(user));
-          this.context.commit('clearAuthForm');
-          this.context.commit('setUser', user);
+          this.context.commit('setToken', user.access_token);
           axios.defaults.headers.common.Authorization = this.context.getters.authToken;
           resolve(user);
         })
@@ -95,9 +96,34 @@ class User extends VuexModule {
   }
 
   @Action({ rawError: true })
+  public async fetchUser(): Promise<{user: ProfileInterface}> {
+    return new Promise((resolve, reject) => {
+      this.context.commit('deleteUser');
+
+      service.profile()
+        .then(response => {
+          const profile = response.data;
+          this.context.commit('setUser', profile);
+          if (profile.role !== REQUIRED_ROLE) {
+            this.context.dispatch('logOut');
+          }
+          resolve(profile);
+        })
+        .catch(error => {
+          this.context.commit('deleteUser');
+          this.context.commit('setAuthFormError', error.response.data.error);
+          localStorage.removeItem('user');
+          reject(error);
+        });
+    });
+  }
+
+  @Action({ rawError: true })
   public logOut(): void {
     this.context.commit('deleteUser');
+    this.context.commit('clearAuthForm');
     localStorage.removeItem('user');
+    delete axios.defaults.headers.common.Authorization;
   }
 
   public get authToken(): string {

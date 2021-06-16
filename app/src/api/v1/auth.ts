@@ -7,9 +7,13 @@ export default class AuthService {
       grant_type: 'password',
       username: login,
       password: password,
-      client_id: 'app',
-      client_secret: '',
+      client_id: 'oauth',
+      client_secret: 'secret',
       access_type: 'offline'
     }));
+  }
+
+  public profile() {
+    return axios.get('/profile');
   }
 }
