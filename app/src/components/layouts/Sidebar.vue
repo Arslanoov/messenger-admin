@@ -26,12 +26,35 @@
             ></b-menu-item>
           </b-menu-list>
           <b-menu-list label="Actions">
-            <b-menu-item icon="logout" label="Logout"></b-menu-item>
+            <b-menu-item @click="onLogOut" icon="logout" label="Logout"></b-menu-item>
           </b-menu-list>
         </b-menu>
       </div>
     </b-sidebar>
   </section>
 </template>
+
+<script lang="ts">
+import Vue from 'vue';
+import Component from 'vue-class-component';
+import { namespace } from 'vuex-class';
+
+import AuthStoreModule from '@/store/modules/auth';
+
+const authModule = namespace('auth');
+
+@Component({
+  name: 'Sidebar',
+})
+
+export default class Login extends Vue {
+  @authModule.Action('logOut') logOut!: typeof AuthStoreModule.prototype.logOut
+
+  public onLogOut(): void {
+    this.logOut();
+    this.$router.push('/login');
+  }
+}
+</script>
 
 <style lang="sass" scoped></style>

@@ -5,6 +5,8 @@ import Home from '@/views/Home.vue';
 import Login from '@/views/Login.vue';
 import Users from '@/views/Users.vue';
 
+import { checkIsAuth } from '@/helpers/auth';
+
 Vue.use(VueRouter);
 
 const routes: Array<RouteConfig> = [
@@ -41,6 +43,25 @@ const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
   routes,
+});
+
+router.beforeEach((to, from, next) => {
+  const isAuth = checkIsAuth();
+
+  const requiresAuth = to.matched.some(record => record.meta.requiresAuth);
+  const requiresNotAuth = to.matched.some(record => record.meta.requiresNoAuth);
+
+  if (requiresAuth && !isAuth) {
+    next('/login');
+    return;
+  }
+
+  if (requiresNotAuth && isAuth) {
+    next('/');
+    return;
+  }
+
+  next();
 });
 
 export default router;
