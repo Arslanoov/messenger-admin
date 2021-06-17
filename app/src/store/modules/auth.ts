@@ -88,8 +88,10 @@ class User extends VuexModule {
         })
         .catch(error => {
           this.context.commit('deleteUser');
-          this.context.commit('setAuthFormError', error.response.data.error);
           localStorage.removeItem('user');
+          if (error.response) {
+            this.context.commit('setAuthFormError', error.response.data.message);
+          }
           reject(error);
         });
     });
@@ -106,12 +108,13 @@ class User extends VuexModule {
           this.context.commit('setUser', profile);
           if (profile.role !== REQUIRED_ROLE) {
             this.context.dispatch('logOut');
+            this.context.commit('setAuthFormError', 'Access denied');
           }
           resolve(profile);
         })
         .catch(error => {
           this.context.commit('deleteUser');
-          this.context.commit('setAuthFormError', error.response.data.error);
+          this.context.commit('setAuthFormError', error.response.data.message);
           localStorage.removeItem('user');
           reject(error);
         });

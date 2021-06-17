@@ -12,11 +12,11 @@ if (user) {
 }
 
 axios.interceptors.response.use((response) => response, async (error) => {
-  if ([401, 403].includes(error.response.status)) {
-    store.commit('auth');
+  if ([401, 403].includes(error.response?.status)) {
+    store.commit('auth/logOut');
   }
 
-  await router.push('/login');
+  router.push('/login').catch(() => {});
 
   return Promise.reject(error);
 });
