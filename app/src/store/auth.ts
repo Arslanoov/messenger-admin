@@ -78,6 +78,7 @@ class User extends VuexModule {
   public async logIn(): Promise<UserInterface> {
     return new Promise((resolve, reject) => {
       this.context.commit('deleteUser');
+      this.context.commit('clearAuthFormError');
 
       service.auth(this.authForm.username || '', this.authForm.password || '')
         .then(response => {
