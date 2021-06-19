@@ -20,18 +20,13 @@ class User extends VuexModule {
   public users: ProfileInterface[] = []
   public paginationSettings: PaginationInterface = {
     currentPage: 1,
-    pageSize: 20,
-    totalCount: null
+    pageSize: 1,
+    totalCount: 0
   }
 
   @Mutation
   public setUsers(users: ProfileInterface[]): void {
     this.users = users;
-  }
-
-  @Mutation
-  public clearUsers(): void {
-    this.users = [];
   }
 
   @Mutation
@@ -47,7 +42,6 @@ class User extends VuexModule {
   @Action({ rawError: true })
   public async fetchUsers(): Promise<ProfileInterface[]> {
     return new Promise((resolve, reject) => {
-      this.context.commit('clearUsers');
       service.getUsersList(this.paginationSettings.currentPage)
         .then(response => {
           const users: ProfileInterface[] = response.data.items;
