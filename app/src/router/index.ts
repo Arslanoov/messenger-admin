@@ -12,6 +12,13 @@ Vue.use(VueRouter);
 const routes: Array<RouteConfig> = [
   {
     path: '/',
+    name: 'Index',
+    redirect: {
+      name: 'Home',
+    },
+  },
+  {
+    path: '/home',
     name: 'Home',
     component: Home,
     meta: {
@@ -43,6 +50,7 @@ const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
   routes,
+  linkActiveClass: 'is-active'
 });
 
 router.beforeEach((to, from, next) => {

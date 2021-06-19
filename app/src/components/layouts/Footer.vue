@@ -8,13 +8,12 @@
   </footer>
 </template>
 
-<style lang="scss" scoped>
-.footer {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
+<style lang="sass" scoped>
+.footer
+  position: fixed
+  bottom: 0
+  left: 0
+  right: 0
 
-  padding: 2rem;
-}
+  padding: 2rem
 </style>

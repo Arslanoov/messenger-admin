@@ -15,8 +15,7 @@
               icon="home"
               label="Home"
               tag="router-link"
-              to="/"
-              active
+              to="/home"
             ></b-menu-item>
             <b-menu-item
               icon="account"
@@ -56,5 +55,3 @@ export default class Login extends Vue {
   }
 }
 </script>
-
-<style lang="sass" scoped></style>
