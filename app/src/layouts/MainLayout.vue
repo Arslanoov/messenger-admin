@@ -1,11 +1,13 @@
 <template>
-  <main class="main">
+  <main class="main page-wrapper">
     <div class="container is-fluid">
-      <Header />
-      <div class="columns">
-        <Sidebar class="column" />
-        <div class="column is-three-quarters">
-          <router-view />
+      <div class="content-wrapper">
+        <Header />
+        <div class="columns">
+          <Sidebar class="column" />
+          <div class="column is-three-quarters">
+            <router-view />
+          </div>
         </div>
       </div>
       <Footer />
