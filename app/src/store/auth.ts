@@ -5,11 +5,12 @@ import {
   Action,
 } from 'vuex-module-decorators';
 
+import axios from 'axios';
+
 import { AuthFormInterface } from '@/types/forms/auth';
 import UserInterface, { ProfileInterface } from '@/types/user';
 
 import AuthService from '@/api/v1/auth';
-import axios from 'axios';
 const service = new AuthService();
 
 export const REQUIRED_ROLE = 'Admin';

@@ -31,7 +31,7 @@ import Vue from 'vue';
 import Component from 'vue-class-component';
 import { namespace } from 'vuex-class';
 
-import AuthStoreModule from '@/store/modules/auth';
+import AuthStoreModule from '@/store/auth';
 import { AuthFormInterface } from '@/types/forms/auth';
 
 const authModule = namespace('auth');
