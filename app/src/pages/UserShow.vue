@@ -13,8 +13,32 @@
         <div class="media-content">
           <p class="title is-4">{{ manageUser.username }}</p>
           <p class="subtitle is-6">@{{ manageUser.username }}</p>
-          <b-tag class="tag" :type="statusTypes[manageUser.status]">{{ manageUser.status }}</b-tag>
-          <b-tag class="tag" :type="roleTypes[manageUser.role]">{{ manageUser.role }}</b-tag>
+          <div class="tags">
+            <div
+              @click="toggleStatus"
+              class="tags__item"
+            >
+              <b-tag class="tag" :type="statusTypes[manageUser.status]">
+                {{ manageUser.status }}
+              </b-tag>
+            </div>
+            <div
+              @click="toggleRole"
+              class="tags__item"
+            >
+              <b-tag class="tag" :type="roleTypes[manageUser.role]">
+                {{ manageUser.role }}
+              </b-tag>
+            </div>
+            <div
+              @click="onRemove"
+              class="tags__item"
+            >
+              <b-tag class="tag" type="is-danger">
+                Remove
+              </b-tag>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -50,12 +74,31 @@ export default class Users extends Vue {
   @usersModule.State('manageUser') manageUser!: ProfileInterface
 
   @usersModule.Action('fetchManageUser') fetchManageUser!: typeof UsersStoreModule.prototype.fetchManageUser
+  @usersModule.Action('activateManageUser') activate!: typeof UsersStoreModule.prototype.activateManageUser
+  @usersModule.Action('draftManageUser') draft!: typeof UsersStoreModule.prototype.draftManageUser
+  @usersModule.Action('makeManageUserAsAdmin') makeAdmin!: typeof UsersStoreModule.prototype.makeManageUserAsAdmin
+  @usersModule.Action('fireManageUser') fire!: typeof UsersStoreModule.prototype.fireManageUser
+  @usersModule.Action('removeManageUser') remove!: typeof UsersStoreModule.prototype.removeManageUser
 
   public statusTypes = statusTypes
   public roleTypes = roleTypes
 
   public mounted(): void {
-    this.fetchManageUser(this.$route.params.id);
+    this.fetchManageUser(this.$route.params.id)
+      .catch(() => this.$router.push('/users'));
+  }
+
+  public toggleStatus(): void {
+    this.manageUser.status === 'Active' ? this.draft() : this.activate();
+  }
+
+  public toggleRole(): void {
+    this.manageUser.role === 'Admin' ? this.fire() : this.makeAdmin();
+  }
+
+  public onRemove(): void {
+    confirm('Are you sure?') && this.remove()
+      .then(() => this.$router.push('/users'));
   }
 
   public imageUrl(url: string): string {
@@ -65,7 +108,14 @@ export default class Users extends Vue {
 </script>
 
 <style lang="sass" scoped>
-.tag
-  &:not(:last-of-type)
-    margin-right: .5rem
+.tags
+  display: flex
+  align-items: center
+
+  &__item
+    &:hover
+      cursor: pointer
+
+    &:not(:last-of-type)
+      margin-right: .5rem
 </style>

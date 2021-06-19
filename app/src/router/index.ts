@@ -37,7 +37,7 @@ const routes: Array<RouteConfig> = [
     },
   },
   {
-    path: '/user/:id',
+    path: '/users/:id',
     name: 'UserShow',
     component: UserShow,
     meta: {

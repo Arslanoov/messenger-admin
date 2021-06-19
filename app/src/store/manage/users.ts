@@ -31,6 +31,11 @@ class User extends VuexModule {
   }
 
   @Mutation
+  public clearUsers(): void {
+    this.users = [];
+  }
+
+  @Mutation
   public setTotalCount(count: number): void {
     this.paginationSettings.totalCount = count;
   }
@@ -48,6 +53,14 @@ class User extends VuexModule {
   @Mutation
   public setUserForManage(user: ProfileInterface): void {
     this.manageUser = user;
+  }
+
+  @Mutation
+  public updateManageUser(user: Partial<ProfileInterface>): void {
+    this.manageUser = {
+      ...this.manageUser,
+      ...user
+    } as ProfileInterface;
   }
 
   @Mutation
@@ -81,6 +94,96 @@ class User extends VuexModule {
           resolve(user);
         })
         .catch(error => reject(error));
+    });
+  }
+
+  @Action({ rawError: true })
+  public async activateManageUser(): Promise<string> {
+    return new Promise((resolve, reject) => {
+      if (!this.manageUser) {
+        reject('Undefined user');
+      }
+
+      const uuid = (this.manageUser as ProfileInterface).uuid;
+      service.activate(uuid)
+        .then((response) => {
+          this.context.commit('updateManageUser', {
+            status: response.data.status
+          });
+          resolve(response.data.status);
+        })
+        .catch(error => reject(error));
+    });
+  }
+
+  @Action({ rawError: true })
+  public async draftManageUser(): Promise<string> {
+    return new Promise((resolve, reject) => {
+      if (!this.manageUser) {
+        reject('Undefined user');
+      }
+
+      const uuid = (this.manageUser as ProfileInterface).uuid;
+      service.draft(uuid)
+        .then((response) => {
+          this.context.commit('updateManageUser', {
+            status: response.data.status
+          });
+          resolve(response.data.status);
+        })
+        .catch(error => reject(error));
+    });
+  }
+
+  @Action({ rawError: true })
+  public async makeManageUserAsAdmin(): Promise<string> {
+    return new Promise((resolve, reject) => {
+      if (!this.manageUser) {
+        reject('Undefined user');
+      }
+
+      const uuid = (this.manageUser as ProfileInterface).uuid;
+      service.makeAdmin(uuid)
+        .then((response) => {
+          this.context.commit('updateManageUser', {
+            role: response.data.role
+          });
+          resolve(response.data.role);
+        })
+        .catch(error => reject(error));
+    });
+  }
+
+  @Action({ rawError: true })
+  public async fireManageUser(): Promise<string> {
+    return new Promise((resolve, reject) => {
+      if (!this.manageUser) {
+        reject('Undefined user');
+      }
+
+      const uuid = (this.manageUser as ProfileInterface).uuid;
+      service.fire(uuid)
+        .then((response) => {
+          this.context.commit('updateManageUser', {
+            role: response.data.role
+          });
+          resolve(response.data.role);
+        })
+        .catch(error => reject(error));
+    });
+  }
+
+  @Action({ rawError: true })
+  public async removeManageUser(): Promise<void> {
+    return new Promise((resolve, reject) => {
+      if (!this.manageUser) {
+        reject('Undefined user');
+      }
+
+      const uuid = (this.manageUser as ProfileInterface).uuid;
+      service.remove(uuid)
+        .then(() => resolve())
+        .catch((error) => reject(error));
     });
   }
 }

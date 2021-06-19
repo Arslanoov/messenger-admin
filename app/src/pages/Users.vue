@@ -58,6 +58,7 @@ export default class Users extends Vue {
   @usersModule.State('users') users!: ProfileInterface[]
   @usersModule.State('paginationSettings') paginationSettings!: PaginationInterface
 
+  @usersModule.Mutation('clearUsers') clearUsers!: typeof UsersStoreModule.prototype.clearUsers
   @usersModule.Mutation('setCurrentPage') setPage!: typeof UsersStoreModule.prototype.setCurrentPage
 
   @usersModule.Action('fetchUsers') fetchUsers!: typeof UsersStoreModule.prototype.fetchUsers
@@ -69,8 +70,12 @@ export default class Users extends Vue {
     this.fetchUsers();
   }
 
+  public destroyed(): void {
+    this.clearUsers();
+  }
+
   public showUser(uuid: string): void {
-    this.$router.push(`/user/${uuid}`);
+    this.$router.push(`/users/${uuid}`);
   }
 
   public get currentPage(): number {
