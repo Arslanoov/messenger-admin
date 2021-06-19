@@ -3,7 +3,7 @@
     <b-sidebar
       :reduce="false"
       position="static"
-      mobile="reduce"
+      mobile="fullwidth"
       type="is-white"
       expand-on-hover
       open

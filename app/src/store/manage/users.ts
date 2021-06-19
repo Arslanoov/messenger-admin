@@ -20,7 +20,7 @@ class User extends VuexModule {
   public users: ProfileInterface[] = []
   public paginationSettings: PaginationInterface = {
     currentPage: 1,
-    pageSize: 1,
+    pageSize: 20,
     totalCount: 0
   }
 
@@ -39,14 +39,20 @@ class User extends VuexModule {
     this.paginationSettings.currentPage = page;
   }
 
+  @Mutation
+  public setPageSize(size: number): void {
+    this.paginationSettings.pageSize = size;
+  }
+
   @Action({ rawError: true })
   public async fetchUsers(): Promise<ProfileInterface[]> {
     return new Promise((resolve, reject) => {
       service.getUsersList(this.paginationSettings.currentPage)
         .then(response => {
           const users: ProfileInterface[] = response.data.items;
+          this.context.commit('setTotalCount', response.data.totalCount);
+          this.context.commit('setPageSize', response.data.perPage);
           this.context.commit('setUsers', users);
-          this.context.commit('setTotalCount', users.length);
           resolve(users);
         })
         .catch(error => reject(error));
