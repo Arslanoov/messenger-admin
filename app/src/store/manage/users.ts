@@ -18,6 +18,7 @@ const service = new UserService();
 
 class User extends VuexModule {
   public users: ProfileInterface[] = []
+  public manageUser: ProfileInterface | null = null
   public paginationSettings: PaginationInterface = {
     currentPage: 1,
     pageSize: 20,
@@ -44,6 +45,16 @@ class User extends VuexModule {
     this.paginationSettings.pageSize = size;
   }
 
+  @Mutation
+  public setUserForManage(user: ProfileInterface): void {
+    this.manageUser = user;
+  }
+
+  @Mutation
+  public clearManageUser(): void {
+    this.manageUser = null;
+  }
+
   @Action({ rawError: true })
   public async fetchUsers(): Promise<ProfileInterface[]> {
     return new Promise((resolve, reject) => {
@@ -54,6 +65,20 @@ class User extends VuexModule {
           this.context.commit('setPageSize', response.data.perPage);
           this.context.commit('setUsers', users);
           resolve(users);
+        })
+        .catch(error => reject(error));
+    });
+  }
+
+  @Action({ rawError: true })
+  public async fetchManageUser(uuid: string): Promise<ProfileInterface> {
+    return new Promise((resolve, reject) => {
+      this.context.commit('clearManageUser');
+      service.getUser(uuid)
+        .then(response => {
+          const user: ProfileInterface = response.data;
+          this.context.commit('setUserForManage', user);
+          resolve(user);
         })
         .catch(error => reject(error));
     });

@@ -1,7 +1,7 @@
 <template>
   <div class="users">
     <b-table :data="users">
-      <b-table-column width="40%" field="uuid" label="ID" v-slot="props">
+      <b-table-column width="30%" field="uuid" label="ID" v-slot="props">
         {{ props.row.uuid }}
       </b-table-column>
 
@@ -15,6 +15,15 @@
 
       <b-table-column width="10%" field="role" label="Role" v-slot="props">
         <b-tag :type="roleTypes[props.row.role]">{{ props.row.role }}</b-tag>
+      </b-table-column>
+
+      <b-table-column width="10%" label="Manage" v-slot="props">
+        <b-button
+          @click="showUser(props.row.uuid)"
+          type="is-primary"
+          size="is-small"
+          outlined
+        >Show</b-button>
       </b-table-column>
     </b-table>
 
@@ -32,6 +41,8 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';
+
+import { roleTypes, statusTypes } from '@/const/classes';
 
 import UsersStoreModule from '@/store/manage/users';
 import { ProfileInterface } from '@/types/user';
@@ -51,18 +62,15 @@ export default class Users extends Vue {
 
   @usersModule.Action('fetchUsers') fetchUsers!: typeof UsersStoreModule.prototype.fetchUsers
 
-  public statusTypes = {
-    Active: 'is-success',
-    Draft: 'is-danger'
-  }
-
-  public roleTypes = {
-    User: 'is-primary is-light',
-    Admin: 'is-danger is-light'
-  }
+  public statusTypes = statusTypes
+  public roleTypes = roleTypes
 
   public mounted(): void {
     this.fetchUsers();
+  }
+
+  public showUser(uuid: string): void {
+    this.$router.push(`/user/${uuid}`);
   }
 
   public get currentPage(): number {

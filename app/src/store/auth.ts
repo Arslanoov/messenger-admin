@@ -65,7 +65,7 @@ class User extends VuexModule {
   }
 
   @Mutation
-  public setUser(user: ProfileInterface): void {
+  public setUser(user: UserInterface): void {
     this.user = user;
   }
 

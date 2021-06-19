@@ -4,6 +4,7 @@ import VueRouter, { RouteConfig } from 'vue-router';
 import Home from '@/pages/Home.vue';
 import Login from '@/pages/Login.vue';
 import Users from '@/pages/Users.vue';
+import UserShow from '@/pages/UserShow.vue';
 
 import { checkIsAuth } from '@/helpers/auth';
 
@@ -34,6 +35,15 @@ const routes: Array<RouteConfig> = [
       requiresAuth: true,
       layout: 'main',
     },
+  },
+  {
+    path: '/user/:id',
+    name: 'UserShow',
+    component: UserShow,
+    meta: {
+      requiresAuth: true,
+      layout: 'main',
+    }
   },
   {
     path: '/login',
