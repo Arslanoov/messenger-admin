@@ -18,6 +18,7 @@ module.exports = {
     'semi': [2, 'always'],
     'quotes': [2, 'single', { 'avoidEscape': true }],
 
+    '@typescript-eslint/no-empty-function': 0,
     '@typescript-eslint/no-extra-semi': 0,
     '@typescript-eslint/explicit-module-boundary-types': 0,
   },

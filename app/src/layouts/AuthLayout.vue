@@ -14,14 +14,12 @@ export default class AuthLayout extends Vue {
 }
 </script>
 
-<style lang="scss" scoped>
-.columns {
-  height: 100vh;
-  overflow-y: hidden;
+<style lang="sass" scoped>
+.columns
+  height: 100vh
+  overflow-y: hidden
 
-  scrollbar-width: none;
-  &::-webkit-scrollbar {
-    display: none;
-  }
-}
+  scrollbar-width: none
+  &::-webkit-scrollbar
+    display: none
 </style>

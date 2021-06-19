@@ -1,7 +1,5 @@
 import Vue from 'vue';
 
-import Buefy from 'buefy';
-
 import router from './router';
 import store from './store';
 
@@ -9,11 +7,12 @@ import App from './App.vue';
 
 require('./plugins/axios');
 
-import './assets/styles/main.sass';
-
+import Buefy from 'buefy';
 Vue.use(Buefy);
 
-Vue.config.productionTip = false;
+import 'buefy/dist/buefy.css';
+
+import './assets/styles/main.sass';
 
 new Vue({
   router,

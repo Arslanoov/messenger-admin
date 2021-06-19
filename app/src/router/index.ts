@@ -1,9 +1,10 @@
 import Vue from 'vue';
 import VueRouter, { RouteConfig } from 'vue-router';
 
-import Home from '@/views/Home.vue';
-import Login from '@/views/Login.vue';
-import Users from '@/views/Users.vue';
+import Home from '@/pages/Home.vue';
+import Login from '@/pages/Login.vue';
+import Users from '@/pages/Users.vue';
+import UserShow from '@/pages/UserShow.vue';
 
 import { checkIsAuth } from '@/helpers/auth';
 
@@ -12,6 +13,13 @@ Vue.use(VueRouter);
 const routes: Array<RouteConfig> = [
   {
     path: '/',
+    name: 'Index',
+    redirect: {
+      name: 'Home',
+    },
+  },
+  {
+    path: '/home',
     name: 'Home',
     component: Home,
     meta: {
@@ -29,6 +37,15 @@ const routes: Array<RouteConfig> = [
     },
   },
   {
+    path: '/users/:id',
+    name: 'UserShow',
+    component: UserShow,
+    meta: {
+      requiresAuth: true,
+      layout: 'main',
+    }
+  },
+  {
     path: '/login',
     name: 'Login',
     component: Login,
@@ -43,6 +60,7 @@ const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
   routes,
+  linkActiveClass: 'is-active'
 });
 
 router.beforeEach((to, from, next) => {

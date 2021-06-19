@@ -5,11 +5,12 @@ import {
   Action,
 } from 'vuex-module-decorators';
 
+import axios from 'axios';
+
 import { AuthFormInterface } from '@/types/forms/auth';
 import UserInterface, { ProfileInterface } from '@/types/user';
 
 import AuthService from '@/api/v1/auth';
-import axios from 'axios';
 const service = new AuthService();
 
 export const REQUIRED_ROLE = 'Admin';
@@ -64,7 +65,7 @@ class User extends VuexModule {
   }
 
   @Mutation
-  public setUser(user: ProfileInterface): void {
+  public setUser(user: UserInterface): void {
     this.user = user;
   }
 
@@ -88,8 +89,10 @@ class User extends VuexModule {
         })
         .catch(error => {
           this.context.commit('deleteUser');
-          this.context.commit('setAuthFormError', error.response.data.error);
           localStorage.removeItem('user');
+          if (error.response) {
+            this.context.commit('setAuthFormError', error.response.data.message);
+          }
           reject(error);
         });
     });
@@ -106,12 +109,13 @@ class User extends VuexModule {
           this.context.commit('setUser', profile);
           if (profile.role !== REQUIRED_ROLE) {
             this.context.dispatch('logOut');
+            this.context.commit('setAuthFormError', 'Access denied');
           }
           resolve(profile);
         })
         .catch(error => {
           this.context.commit('deleteUser');
-          this.context.commit('setAuthFormError', error.response.data.error);
+          this.context.commit('setAuthFormError', error.response.data.message);
           localStorage.removeItem('user');
           reject(error);
         });

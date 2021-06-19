@@ -1,6 +1,6 @@
 <template>
   <div class="notification is-primary">
-    Users
+    Hi
   </div>
 </template>
 
@@ -9,5 +9,5 @@ import { Component, Vue } from 'vue-property-decorator';
 
 @Component({})
 
-export default class Users extends Vue {}
+export default class Home extends Vue {}
 </script>
