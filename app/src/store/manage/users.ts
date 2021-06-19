@@ -21,7 +21,7 @@ class User extends VuexModule {
   public manageUser: ProfileInterface | null = null
   public paginationSettings: PaginationInterface = {
     currentPage: 1,
-    pageSize: 20,
+    pageSize: 10,
     totalCount: 0
   }
 
