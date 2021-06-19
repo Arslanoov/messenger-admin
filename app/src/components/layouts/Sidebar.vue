@@ -35,7 +35,6 @@
 </template>
 
 <script lang="ts">
-/* TODO: Pages, SSH Key */
 import Vue from 'vue';
 import Component from 'vue-class-component';
 import { namespace } from 'vuex-class';
