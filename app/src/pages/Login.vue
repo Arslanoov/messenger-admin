@@ -22,7 +22,7 @@
       <b-input @input="setPassword" :value="form.password" type="password" maxlength="32"></b-input>
     </b-field>
 
-    <b-button @click="onLogIn" type="is-info">Submit</b-button>
+    <b-button @click="onLogIn" :disabled="loading" type="is-info">Submit</b-button>
   </form>
 </template>
 
@@ -52,10 +52,23 @@ export default class Login extends Vue {
   @authModule.Action('logIn') logIn!: typeof AuthStoreModule.prototype.logIn
   @authModule.Action('fetchUser') fetchUser!: typeof AuthStoreModule.prototype.fetchUser
 
+  public loading = false;
+
   public onLogIn(): void {
+    this.loading = true;
     this.logIn()
       .then(() => this.fetchUser())
-      .then(() => this.$router.push('/'));
+      .then(() => this.$router.push('/'))
+      .finally(() => this.loading = false);
   }
 }
 </script>
+
+<style lang="sass">
+.login-form
+  .tag
+    min-height: 2em
+    height: auto
+
+    white-space: normal
+</style>

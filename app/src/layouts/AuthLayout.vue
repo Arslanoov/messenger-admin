@@ -16,8 +16,15 @@ export default class AuthLayout extends Vue {
 
 <style lang="sass" scoped>
 .columns
+  max-width: 100vw
   height: 100vh
   overflow-y: hidden
+
+  @media (max-width: 768px)
+    min-height: 100vh
+    height: auto
+
+    padding: 2rem 0
 
   scrollbar-width: none
   &::-webkit-scrollbar
